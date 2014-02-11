@@ -17,14 +17,13 @@ char ** getenviron(void) { return environ; }
 #endif
 
 
-int spawn(std::string const & path)
+int spawn(std::string const & path, pid_t * pid)
 {
-    pid_t pid = 0;
     char * argv[] = {
         const_cast<char *>(path.c_str()),
         nullptr
     };
 
-    return posix_spawn(&pid, path.c_str(), nullptr, nullptr, argv,
+    return posix_spawn(pid, path.c_str(), nullptr, nullptr, argv,
         getenviron());
 }

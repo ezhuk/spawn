@@ -10,4 +10,4 @@
 #include <string>
 
 // Spawns a new process.
-int spawn(std::string const & path);
+int spawn(std::string const & path, pid_t * pid);
