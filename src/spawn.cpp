@@ -2,6 +2,8 @@
 // Use of this source code is governed by the MIT license that can be found
 // in the LICENSE file.
 
+#include <sys/wait.h>
+
 #include "spawn/spawn.h"
 
 #if defined(__APPLE__)
@@ -26,4 +28,17 @@ int spawn(std::string const & path, pid_t * pid)
 
     return posix_spawn(pid, path.c_str(), nullptr, nullptr, argv,
         getenviron());
+}
+
+int spawn_and_wait(std::string const & path)
+{
+    pid_t pid = 0;
+
+    int ret = spawn(path, &pid);
+    if (0 == ret) {
+        if (-1 == waitpid(pid, &ret, 0))
+            ret = -1;
+    }
+
+    return ret;
 }
